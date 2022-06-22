@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import axios from 'axios';
 import styled from "styled-components";
 import Home from "./Home/Home2.jsx";
 import Admin from "./Admin/Admin.jsx";
@@ -7,7 +8,35 @@ import Admin from "./Admin/Admin.jsx";
 
 function App() {
   const [home, setHome] = useState(true);
+  const [crop_names, setCrop_names] = useState([]);
+  const [inventory, setInventory] = useState([]);
 
+
+  useEffect(() => {
+    getCropNames();
+    getInventory();
+  },[]);
+
+  let getCropNames = () => {
+    axios.get('/crops')
+    .then((data) => {
+      //console.log('Getting Data',data.data);
+      let names = data.data;
+      names.unshift({crop_name: 'Select A Crop'})
+      setCrop_names(names);
+    });
+  };
+
+  let getInventory = () => {
+    axios.get('/inventory')
+    .then((res) => {
+      //console.log(res);
+      setInventory(res.data);
+    });
+  };
+
+
+  
 
   return (
    <Container>
@@ -23,8 +52,9 @@ function App() {
       </Nav>
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/" element={<Home inventory={inventory}/>} />
+        <Route path="/admin" element={<Admin cropNames={crop_names} 
+                inventory={inventory} />} />
       </Routes>
     </BrowserRouter>
 
@@ -35,7 +65,7 @@ function App() {
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 15vmin 1fr 2fr 1fr 15vmin;
+  grid-template-columns: 20vmin 1fr 4fr 1fr 20vmin;
   grid-template-rows: 7vmin 1fr;
 
 `;

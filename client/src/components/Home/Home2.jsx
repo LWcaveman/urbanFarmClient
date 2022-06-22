@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from "styled-components";
+import Products from './Products.jsx';
 
-function Home() {
+function Home({ inventory }) {
    return(
     <Homecontain>
-
       <Header>Get Some MicroGreens</Header>
-    
+         <Products  inventory={inventory}/> 
       <Button2> Buy </Button2>
     </Homecontain>
    )
