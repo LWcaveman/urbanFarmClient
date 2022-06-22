@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
+import PlantForm from './PlantForm.jsx';
 
 
-let Form = ({ cropNames }) => {
-   const [cropSelected, setCropSelected] = useState(false);
+let Form = ({ cropNames, cropClicked, cropSelected, cropId }) => {
+  let startFormColumnStart = 2;
+  let startFromColumnEnd = 6;
 
-  let cropClicked = (e) => {
-    setCropSelected(true);
-  } 
+  if (cropSelected) {
+    startFormColumnStart = 1;
+    startFromColumnEnd = 5;
+  }
 
   return (
-    <StartFrom>
-      {cropSelected ?  <Button> Plant </Button>  : 
-      <SelectCrop> 
+    <StartFrom start={startFormColumnStart} end={startFromColumnEnd}>
+      {cropSelected ? 
+      <PlantForm cropInfo={cropNames[cropId]}/> :
+      <SelectCrop onChange={cropClicked}> 
         {cropNames.map(crop => {
-          return <InputForm key={crop.id}> {crop.crop_name}</InputForm>
+          return <InputForm  value={crop.id} key={crop.id}> {crop.crop_name}</InputForm>
         })}
       </SelectCrop>}
      <Button> Plant </Button>
@@ -47,23 +51,25 @@ const SelectCrop = styled.select`
   }
 `;
 
-const StartFrom = styled.form`
+const StartFrom = styled.div`
   display: grid;
-  grid-template-rows: repeat(5, 1fr);
+  grid-template-rows: repeat(9, 10vmin);
   grid-template-columns: repeat(3, 1fr);
-  grid-column: 2 /5;
-  grid-row: 2 /6;
+  grid-column-start: 2;
+  grid-column-end: 5;
+  grid-row-start: ${props => props.start};
+  grid-row-end: ${props => props.end};
 `;
 
 const Button = styled.button`
-  grid-row: 3;
+  
   grid-column: 2;
-  background: green;
+  background: #03A63C;
   color: white;
   border-radius: 7px;
-  padding: 20px;
-  margin: 10px;
-  font-size: 16px;
+  padding: 3vmin;
+  margin: 1vmin;
+  font-size: 2vmin;
   :disabled {
     opacity: 0.4;
   }

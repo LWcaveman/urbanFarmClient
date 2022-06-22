@@ -9,21 +9,31 @@ import Inventory from "./Inventory.jsx"
 
 function Admin({ cropNames, inventory }) {
   const [inventoryPage, setInventoryPage] = useState(true);
+  const [cropSelected, setCropSelected] = useState(false);
+  const [cropId, setCropId] = useState(0); 
 
   let trayBoxClick = (e) => {
     let text = e.target.textContent;
     text = text.slice(text.indexOf(':') +2);
-    console.log(text)
+    //console.log(text)
     if (text ===  'Soon' || text === 'None') {
       setInventoryPage(!inventoryPage);
     }
   };
 
+  let cropClicked = (e) => {
+    console.log('HELLO THERE', e.target.value)
+    let crop_id = e.target.value;
+    setCropId(crop_id);
+    setCropSelected(true);
+  };
+  console.log('CROP IN ADMIN ' , cropSelected)
   return (
     <AdminContainer>
-      <Header>What are You Planting Today?</Header>
-   {inventoryPage ? <Inventory trayBoxClick={trayBoxClick} inventory={inventory}/> : 
-                        <Form cropNames={cropNames}/>} 
+      {cropSelected ? null :<Header>What are You Planting Today?</Header>}
+      {inventoryPage ? <Inventory trayBoxClick={trayBoxClick} inventory={inventory}></Inventory> : 
+                      <Form cropNames={cropNames} cropClicked={cropClicked} 
+                            cropSelected={cropSelected} cropId={cropId}/>} 
     </AdminContainer>
   );
 
@@ -31,7 +41,7 @@ function Admin({ cropNames, inventory }) {
  /* grid-template-columns: 1fr; */
 const AdminContainer = styled.div`
   display: grid;
-  grid-template-rows: repeat(8, 1.5fr);
+  grid-template-rows: repeat(8, 1fr);
   grid-template-columns: repeat(5, 1fr);
   grid-column: 3;
   grid-row: 2;

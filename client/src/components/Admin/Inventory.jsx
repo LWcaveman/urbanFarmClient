@@ -54,21 +54,21 @@ const TrayBox = styled.div`
   grid-template-rows: repeat(3, 1fr);
   grid-row: ${props => props.row};
   grid-column: ${props => props.column};
-  background: white;
+  background:#F2DC6B;
 
   border-radius: 3vmin;
   border: solid;
-  border-color: gray;
+  border-color: #012E40;
   border-width: .2vmin;
   margin: 2vmin;
   padding: 2vmin;
 
   font-size: 1vmin;
   :disabled {
-    opacity: 0.4;
+    opacity: 0.2;
   }
   :hover {
-    box-shadow: 0 0 10px yellow;
+    box-shadow: 0 0 15px #F2DC6B;
   }
 `;
 export default Inventory;
