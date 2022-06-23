@@ -3,32 +3,31 @@ import styled from "styled-components";
 import PlantForm from './PlantForm.jsx';
 
 
-let Form = ({ cropNames, cropClicked, cropSelected, cropId }) => {
+let Form = ({ cropInfo, cropClicked, cropSelected, cropId, handlePlantClick, getDate }) => {
   let startFormColumnStart = 2;
   let startFromColumnEnd = 6;
 
   if (cropSelected) {
     startFormColumnStart = 1;
     startFromColumnEnd = 5;
-  }
+  };
+
 
   return (
     <StartFrom start={startFormColumnStart} end={startFromColumnEnd}>
       {cropSelected ? 
-      <PlantForm cropInfo={cropNames[cropId]}/> :
-      <SelectCrop onChange={cropClicked}> 
-        {cropNames.map(crop => {
-          return <InputForm  value={crop.id} key={crop.id}> {crop.crop_name}</InputForm>
+      <PlantForm cropInfo={cropInfo[cropId]} getDate={getDate}/> :
+      <SelectCrop onChange={cropClicked} data-tray={cropInfo[cropId].id}> 
+        {cropInfo.map((crop, index) => {
+          return <InputForm value={crop.id} data-tray={index+1} key={index}> {crop.crop_name}</InputForm>
         })}
       </SelectCrop>}
-     <Button> Plant </Button>
+     <Button onClick={handlePlantClick}> Plant </Button>
   </StartFrom>
   );
 }
 
-
 const InputForm = styled.option`
-
 `;
 
 const SelectCrop = styled.select`

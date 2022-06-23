@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 
 
-let Inventory = ({ trayBoxClick, inventory }) => {
+let Inventory = ({ trayBoxClick, inventory, cropInfo }) => {
   let row = 1
   let column = 0;
 
@@ -11,28 +11,26 @@ let Inventory = ({ trayBoxClick, inventory }) => {
     date_planted: 'Soon',
     moisture_level: 'None',
   };
-
+  
   return (
     <InventoryContainer>
-      {inventory.map((crop) => {
+      {inventory.map((crop, index) => {
         if(column === 3){
           row = row + 1;
           column = 0;
         }
         column = column +1
         return (
-          <TrayBox onClick={trayBoxClick} row={row} column={column}>
-            <InfoLine >CROP TYPE: {trayInfo.crop_type}</InfoLine>
-            <InfoLine >DATE PLANTED: {trayInfo.date_planted}</InfoLine>
-            <InfoLine >MOISTURE LEVEL: {trayInfo.moisture_level}</InfoLine>
+          <TrayBox onClick={trayBoxClick} data-tray={index + 1} row={row} column={column} key={index}>
+            <InfoLine data-tray={index + 1}  >CROP TYPE: {crop.crop_id ? cropInfo[crop.crop_id].crop_name : 'Soon'}</InfoLine>
+            <InfoLine data-tray={index + 1} >DATE PLANTED: {crop.date_planted}</InfoLine>
+            <InfoLine data-tray={index + 1} >Tray: {index + 1}</InfoLine>
           </TrayBox>  
           );
         })
       }
-
     </InventoryContainer>
   );
-
 };
 
 const InventoryContainer = styled.div`

@@ -7,36 +7,35 @@ import Admin from "./Admin/Admin.jsx";
 
 
 function App() {
-  const [home, setHome] = useState(true);
-  const [crop_names, setCrop_names] = useState([]);
+  const [crop_Info, setCrop_Info] = useState([{crop_name: 'Soon'}]);
   const [inventory, setInventory] = useState([]);
-
+  const [trayPlanted, setTrayPlanted] = useState(0);
 
   useEffect(() => {
-    getCropNames();
+    getCropInfo();
     getInventory();
-  },[]);
+  },[trayPlanted]);
 
-  let getCropNames = () => {
-    axios.get('/crops')
+  let getCropInfo = () => {
+    return axios.get('/crops')
     .then((data) => {
-      //console.log('Getting Data',data.data);
-      let names = data.data;
-      names.unshift({crop_name: 'Select A Crop'})
-      setCrop_names(names);
+      let Info = data.data;
+      Info.unshift({crop_name: 'Select A Crop', id: 0})
+      setCrop_Info(Info);
     });
   };
 
   let getInventory = () => {
-    axios.get('/inventory')
+    return axios.get('/inventory')
     .then((res) => {
-      //console.log(res);
       setInventory(res.data);
     });
   };
 
+  let newTrayPlanted = () => {
+    setTrayPlanted(trayPlanted + 1);
+  };
 
-  
 
   return (
    <Container>
@@ -53,21 +52,19 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home inventory={inventory}/>} />
-        <Route path="/admin" element={<Admin cropNames={crop_names} 
-                inventory={inventory} />} />
+        <Route path="/admin" element={<Admin cropInfo={crop_Info} 
+                inventory={inventory} newTrayPlanted={newTrayPlanted} 
+                getInventory={getInventory} getCropInfo={getCropInfo}/> }/>
       </Routes>
     </BrowserRouter>
-
    </Container>
   );
-
-}
+};
 
 const Container = styled.div`
   display: grid;
   grid-template-columns: 20vmin 1fr 4fr 1fr 20vmin;
   grid-template-rows: 7vmin 1fr;
-
 `;
 
 const Header = styled.h2`
@@ -95,9 +92,5 @@ const Button = styled.button`
   }
 `;
 
-
-
 export default App;
-
-//  margin: 10px;
 
