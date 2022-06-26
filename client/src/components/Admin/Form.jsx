@@ -61,7 +61,6 @@ const StartFrom = styled.div`
 `;
 
 const Button = styled.button`
-  
   grid-column: 2;
   background: #03A63C;
   color: white;

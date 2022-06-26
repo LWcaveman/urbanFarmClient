@@ -13,9 +13,10 @@ app.use(express.json());
   res.sendFile(path.join(__dirname, "..", "client/dist", "index.html"));
 }); */
 
+
+
 app.get('/crops', (req, res) => {
   console.log(`recieved ${req.method.toLowerCase()} request from ${req.url}`);
-  //let url = 'http://localhost:3005/crops'
   axios.get(url+req.url).then((data) => {
     //console.log('FRONT END SERVER DATA ', data)
     res.status(200).send(data.data);
@@ -37,8 +38,23 @@ app.put(`/tray/:id`, (req, res) => {
   });
 });
 
+app.get(`/harvested`, (req, res) => {
+  console.log(`recieved ${req.method} request from ${req.url}`);
+  axios.get(url+req.url ).then((data) => {
+    res.status(200).send(data.data);
+  });
+});
 
+app.post(`/harvested`, (req, res) => {
+  axios.post(url+req.url, req.body ).then((data) => {
+    res.status(200).send('Updated Harvested');
+  });
+});
+
+
+/* This catches get requests for pages from the browser example /admin */
 app.get('*', (req, res) => {
+  console.log('IS IT HEER')
   res.sendFile(path.join(__dirname, "..", "client/dist", "index.html"));
 });
 

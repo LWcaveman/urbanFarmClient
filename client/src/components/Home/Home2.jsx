@@ -1,28 +1,23 @@
 import React from 'react';
 import styled from "styled-components";
 import Products from './Products.jsx';
+import ComingSoon from './ComingSoon.jsx';
 
 function Home({ inventory }) {
    return(
     <Homecontain>
-      <Header>Get Some MicroGreens</Header>
-         <Products  inventory={inventory}/> 
-      <Button2> Buy </Button2>
+      <Products  inventory={inventory}/> 
+      <ComingSoon />
     </Homecontain>
    )
 } 
 
 const Homecontain = styled.div`
   display: grid;
-  justify-content: center;
+  grid-template-rows: 44% 50%;
   grid-column: 2 /5;
   grid-row: 2;
 `;
-
-const Header = styled.h2`
-  margin: .75vmin;
-`;
-
 
 const Button = styled.button`
   background: white;

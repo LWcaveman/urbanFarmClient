@@ -14,10 +14,10 @@ function App() {
   useEffect(() => {
     getCropInfo();
     getInventory();
-  },[trayPlanted]);
+  },[]);
 
   let getCropInfo = () => {
-    return axios.get('/crops')
+    axios.get('/crops')
     .then((data) => {
       let Info = data.data;
       Info.unshift({crop_name: 'Select A Crop', id: 0})
@@ -26,7 +26,7 @@ function App() {
   };
 
   let getInventory = () => {
-    return axios.get('/inventory')
+    axios.get('/inventory')
     .then((res) => {
       setInventory(res.data);
     });
@@ -63,8 +63,10 @@ function App() {
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 20vmin 1fr 4fr 1fr 20vmin;
+  grid-template-columns: 25vmin 1fr 4fr 1fr 25vmin;
   grid-template-rows: 7vmin 1fr;
+  width: 100vw;
+  height: 100vh;
 `;
 
 const Header = styled.h2`
@@ -74,7 +76,7 @@ const Header = styled.h2`
 const Nav = styled.div`
   grid-column: 2 / 5;
   grid-row: 1;
-  border-bottom: .25vmin solid green;
+  border-bottom: .25vmin solid #03A63C;
 `;
 
 const Button = styled.button`

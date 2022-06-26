@@ -5,11 +5,11 @@ import styled from "styled-components";
 let Inventory = ({ trayBoxClick, inventory, cropInfo }) => {
   let row = 1
   let column = 0;
-
-  let trayInfo = {
-    crop_type: 'Soon',
+  
+//use this for put request
+ let trayInfo = {
+    crop_id: 0,
     date_planted: 'Soon',
-    moisture_level: 'None',
   };
   
   return (

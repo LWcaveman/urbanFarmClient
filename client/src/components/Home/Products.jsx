@@ -6,17 +6,9 @@ let Products = ({ trayBoxClick, inventory }) => {
   let row = 1
   let column = 0;
 
-  let trayInfo = {
-    crop_type: 'Soon',
-    date_planted: 'Soon',
-    moisture_level: 'None',
-  };
-
-
   return (
     <ProductsContainer>
-  
-      HERE I AM 
+      <Header>Get Some MicroGreens</Header>
     </ProductsContainer>
   );
 
@@ -24,8 +16,14 @@ let Products = ({ trayBoxClick, inventory }) => {
 
 const ProductsContainer = styled.div`
   display: grid;
-
-
+  grid-template-rows: 50% 50%;
+  grid-row: 1;
 `;
+
+const Header = styled.h2`
+  margin-left: auto;
+  margin-right: auto;
+`;
+
 
 export default Products;

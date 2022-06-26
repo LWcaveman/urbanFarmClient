@@ -42,11 +42,7 @@ function Admin({ cropInfo, inventory, newTrayPlanted, getInventory, getCropInfo 
     console.log('UPDATING THIS TRAY ', trayId)
      axios.put(`/tray/${trayId}`, dateObj)
     .then(res => {
-      console.log(res);
-
-      axios.get('/admin')
-      .catch(err => console.log(err));
-      setInventoryPage(true);
+      window.location.reload(false);
     });
   };
  
