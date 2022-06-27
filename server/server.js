@@ -46,8 +46,16 @@ app.get(`/harvested`, (req, res) => {
 });
 
 app.post(`/harvested`, (req, res) => {
+  console.log(`recieved ${req.method} request from ${req.url}`);
   axios.post(url+req.url, req.body ).then((data) => {
-    res.status(200).send('Updated Harvested');
+    res.status(201).send('Updated Harvested');
+  });
+});
+
+app.delete(`/harvested/:id`, (req, res) => {
+  console.log(`recieved ${req.method} request from ${req.url}`);
+  axios.delete(url+req.url ).then((data) => {
+    res.status(204).send('Updated Harvested');
   });
 });
 

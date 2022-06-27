@@ -3,11 +3,11 @@ import styled from "styled-components";
 import Products from './Products.jsx';
 import ComingSoon from './ComingSoon.jsx';
 
-function Home({ inventory }) {
+function Home({ inventory, cropInfo,  harvestInventory }) {
    return(
     <Homecontain>
-      <Products  inventory={inventory}/> 
-      <ComingSoon />
+      <Products  harvestInventory={harvestInventory}/> 
+      <ComingSoon inventory={inventory} cropInfo={cropInfo} />
     </Homecontain>
    )
 } 

@@ -9,11 +9,12 @@ import Admin from "./Admin/Admin.jsx";
 function App() {
   const [crop_Info, setCrop_Info] = useState([{crop_name: 'Soon'}]);
   const [inventory, setInventory] = useState([]);
-  const [trayPlanted, setTrayPlanted] = useState(0);
+  const [harvestInventory, setHarvestInventory] = useState([]);
 
   useEffect(() => {
     getCropInfo();
     getInventory();
+    getHarvested();
   },[]);
 
   let getCropInfo = () => {
@@ -32,9 +33,13 @@ function App() {
     });
   };
 
-  let newTrayPlanted = () => {
-    setTrayPlanted(trayPlanted + 1);
+  let getHarvested = () => {
+    axios.get(`/harvested`)
+    .then((res) => {
+      setHarvestInventory(res.data);
+    })
   };
+
 
 
   return (
@@ -51,9 +56,9 @@ function App() {
       </Nav>
 
       <Routes>
-        <Route path="/" element={<Home inventory={inventory}/>} />
+        <Route path="/" element={<Home inventory={inventory} cropInfo={crop_Info} harvestInventory={harvestInventory}/>} />
         <Route path="/admin" element={<Admin cropInfo={crop_Info} 
-                inventory={inventory} newTrayPlanted={newTrayPlanted} 
+                inventory={inventory} 
                 getInventory={getInventory} getCropInfo={getCropInfo}/> }/>
       </Routes>
     </BrowserRouter>

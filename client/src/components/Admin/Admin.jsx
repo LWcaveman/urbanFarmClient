@@ -3,20 +3,34 @@ import styled from "styled-components";
 import axios from 'axios';
 import Form from "./Form.jsx";
 import Inventory from "./Inventory.jsx";
+import Harvest from "./Harvest.jsx";
 
 
-function Admin({ cropInfo, inventory, newTrayPlanted, getInventory, getCropInfo }) {
+function Admin({ cropInfo, inventory, newTrayPlanted }) {
   const [inventoryPage, setInventoryPage] = useState(true);
   const [cropSelected, setCropSelected] = useState(false);
   const [cropId, setCropId] = useState(2); 
   const [trayId, setTrayId] = useState(0);
+  const [harvested, setHarvested] = useState(false);
+  const [harvestedInfo, setHarvestedInfo] = useState([]);
 
   let trayBoxClick = (e) => {
+    console.log('Tray Box Button')
     let text = e.target.textContent;
-    let tray_id = e.target.getAttribute("data-tray")
+    let tray_id = e.target.getAttribute("data-tray");
+    let cropName =  e.target.getAttribute("data-cropname");
+    console.log(e.target.getAttribute("data-cropid"), cropName)
+    let info = [];
+    info.push(e.target.getAttribute("data-cropid"));
+    info.push(e.target.getAttribute("data-cropname"));
+    setHarvestedInfo(info);
     text = text.slice(text.indexOf(':') +2);
-    if (text ===  'Soon' || text === 'None') {
-      setInventoryPage(!inventoryPage);
+    if (text ===  'Soon' || cropName === 'Select A Crop') {
+      setInventoryPage(false);
+      setHarvested(false);
+    } else {
+      setInventoryPage(false);
+      setHarvested(true);
     }
     setTrayId(tray_id);
     //In later implementation this well got to a harvest from
@@ -45,14 +59,37 @@ function Admin({ cropInfo, inventory, newTrayPlanted, getInventory, getCropInfo 
       window.location.reload(false);
     });
   };
- 
+
+  let clickHarvest = (e) => {
+    let trayInfo = {
+      crop_id: 0,
+      date: 'Soon',
+    };
+    let harvObj = {};
+    harvObj.cropId = harvestedInfo[0]
+    harvObj.cropName = harvestedInfo[1]
+    axios.post(`/harvested`, harvObj)
+    .then((res) => {
+      //update tray inventory 
+      axios.put(`/tray/${trayId}`, trayInfo)
+      .then((res) => {
+        window.location.reload(false);
+      });
+
+    });
+    //.then get the new info and update App level state
+  };
+
   return (
     <AdminContainer>
       {cropSelected ? null :<Header>What are You Planting Today?</Header>}
-      {inventoryPage ? <Inventory trayBoxClick={trayBoxClick} inventory={inventory} cropInfo={cropInfo}></Inventory> : 
-                      <Form cropInfo={cropInfo} cropClicked={cropClicked} 
+      {inventoryPage ? <Inventory trayBoxClick={trayBoxClick} 
+                                  inventory={inventory} cropInfo={cropInfo} /> :
+       harvested ? <Harvest harvestedInfo={harvestedInfo} clickHarvest={clickHarvest}/> : 
+                        <Form cropInfo={cropInfo} cropClicked={cropClicked} 
                             cropSelected={cropSelected} cropId={cropId} 
-                            handlePlantClick={handlePlantClick} getDate={getDate}/>} 
+                            handlePlantClick={handlePlantClick} getDate={getDate}/> 
+                          } 
     </AdminContainer>
   );
 

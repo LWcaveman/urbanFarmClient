@@ -1,34 +1,37 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import styled from "styled-components";
 
 
 let Inventory = ({ trayBoxClick, inventory, cropInfo }) => {
   let row = 1
   let column = 0;
-  
+
 //use this for put request
  let trayInfo = {
     crop_id: 0,
     date_planted: 'Soon',
   };
-  
+
+  console.log('THIS IS INV 🫣', inventory);
   return (
     <InventoryContainer>
-      {inventory.map((crop, index) => {
+      {Array.isArray(inventory) ? inventory.map((crop, index) => {
+      console.log(crop.crop_id);
         if(column === 3){
           row = row + 1;
           column = 0;
         }
         column = column +1
         return (
-          <TrayBox onClick={trayBoxClick} data-tray={index + 1} row={row} column={column} key={index}>
-            <InfoLine data-tray={index + 1}  >CROP TYPE: {crop.crop_id ? cropInfo[crop.crop_id].crop_name : 'Soon'}</InfoLine>
-            <InfoLine data-tray={index + 1} >DATE PLANTED: {crop.date_planted}</InfoLine>
-            <InfoLine data-tray={index + 1} >Tray: {index + 1}</InfoLine>
+          <TrayBox onClick={trayBoxClick} data-tray={index + 1} data-cropid={crop.id} data-cropname={cropInfo[crop.crop_id].crop_name} row={row} column={column} key={index}>
+            <InfoLine data-tray={index + 1}  data-cropid={crop.id} data-cropname={cropInfo[crop.crop_id].crop_name }>CROP TYPE: {cropInfo[crop.crop_id].crop_name }</InfoLine>
+            <InfoLine data-tray={index + 1}  data-cropid={crop.id} data-cropname={cropInfo[crop.crop_id].crop_name }>DATE PLANTED: {crop.date_planted}</InfoLine>
+            <InfoLine data-tray={index + 1}  data-cropid={crop.id} data-cropname={cropInfo[crop.crop_id].crop_name }>Tray: {index + 1}</InfoLine>
           </TrayBox>  
           );
         })
-      }
+      : []}
     </InventoryContainer>
   );
 };
